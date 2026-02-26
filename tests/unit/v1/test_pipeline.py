@@ -390,6 +390,7 @@ def test_pipeline_execute_stream_equivalence():
             ("name", [0.1], "cosine", stages.FindNearestOptions(10)),
             stages.FindNearest,
         ),
+        ("let", {"var1": Field.of("n")}, stages.Let),
         ("replace_with", ("name",), stages.ReplaceWith),
         ("replace_with", (Field.of("n"),), stages.ReplaceWith),
         ("sort", (Field.of("n").descending(),), stages.Sort),
@@ -413,7 +414,10 @@ def test_pipeline_execute_stream_equivalence():
 def test_pipeline_methods(method, args, result_cls):
     start_ppl = _make_pipeline()
     method_ptr = getattr(start_ppl, method)
-    result_ppl = method_ptr(*args)
+    if method == "let":
+        result_ppl = method_ptr(**args)
+    else:
+        result_ppl = method_ptr(*args)
     assert result_ppl != start_ppl
     assert len(start_ppl.stages) == 0
     assert len(result_ppl.stages) == 1
