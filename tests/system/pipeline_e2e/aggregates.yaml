@@ -368,3 +368,79 @@ tests:
                     - fieldReferenceValue: genre
           - mapValue: {}
           name: aggregate
+  - description: testFirst
+    pipeline:
+      - Collection: books
+      - Sort:
+          - Ordering:
+            - Field: title
+            - ASCENDING
+      - Aggregate:
+        - AliasedExpression:
+            - FunctionExpression.first:
+              - Field: title
+            - "first_title"
+    assert_results:
+      - first_title: "1984"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                first_title:
+                  functionValue:
+                    name: first
+                    args:
+                    - fieldReferenceValue: title
+          - mapValue: {}
+          name: aggregate
+  - description: testLast
+    pipeline:
+      - Collection: books
+      - Sort:
+          - Ordering:
+            - Field: title
+            - ASCENDING
+      - Aggregate:
+        - AliasedExpression:
+            - FunctionExpression.last:
+              - Field: title
+            - "last_title"
+    assert_results:
+      - last_title: "To Kill a Mockingbird"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                last_title:
+                  functionValue:
+                    name: last
+                    args:
+                    - fieldReferenceValue: title
+          - mapValue: {}
+          name: aggregate

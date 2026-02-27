@@ -1598,3 +1598,21 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.array_agg_distinct()"
         infix_instance = arg1.array_agg_distinct()
         assert infix_instance == instance
+
+    def test_first(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.first(arg1)
+        assert instance.name == "first"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.first()"
+        infix_instance = arg1.first()
+        assert infix_instance == instance
+
+    def test_last(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.last(arg1)
+        assert instance.name == "last"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.last()"
+        infix_instance = arg1.last()
+        assert infix_instance == instance

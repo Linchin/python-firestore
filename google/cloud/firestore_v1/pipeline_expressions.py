@@ -1438,6 +1438,32 @@ class Expression(ABC):
         return AggregateFunction("array_agg_distinct", [self])
 
     @expose_as_static
+    def first(self) -> "Expression":
+        """Creates an aggregation that selecting the first value.
+
+        Example:
+            >>> # Select the first value of 'color'
+            >>> Field.of("color").first()
+
+        Returns:
+            A new `AggregateFunction` representing the first aggregation.
+        """
+        return AggregateFunction("first", [self])
+
+    @expose_as_static
+    def last(self) -> "Expression":
+        """Creates an aggregation that selecting the last value.
+
+        Example:
+            >>> # Select the last value of 'color'
+            >>> Field.of("color").last()
+
+        Returns:
+            A new `AggregateFunction` representing the last aggregation.
+        """
+        return AggregateFunction("last", [self])
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.
