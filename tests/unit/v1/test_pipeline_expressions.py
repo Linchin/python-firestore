@@ -1580,3 +1580,21 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.maximum()"
         infix_instance = arg1.maximum()
         assert infix_instance == instance
+
+    def test_array_agg(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_agg(arg1)
+        assert instance.name == "array_agg"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_agg()"
+        infix_instance = arg1.array_agg()
+        assert infix_instance == instance
+
+    def test_array_agg_distinct(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_agg_distinct(arg1)
+        assert instance.name == "array_agg_distinct"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_agg_distinct()"
+        infix_instance = arg1.array_agg_distinct()
+        assert infix_instance == instance

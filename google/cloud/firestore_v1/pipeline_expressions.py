@@ -1412,6 +1412,32 @@ class Expression(ABC):
         return FunctionExpression("timestamp_to_unix_micros", [self])
 
     @expose_as_static
+    def array_agg(self) -> "Expression":
+        """Creates an aggregation that collects values into an array.
+
+        Example:
+            >>> # Collect all values of 'color' into an array
+            >>> Field.of("color").array_agg()
+
+        Returns:
+            A new `AggregateFunction` representing the array aggregation.
+        """
+        return AggregateFunction("array_agg", [self])
+
+    @expose_as_static
+    def array_agg_distinct(self) -> "Expression":
+        """Creates an aggregation that collects distinct values into an array.
+
+        Example:
+            >>> # Collect distinct values of 'color' into an array
+            >>> Field.of("color").array_agg_distinct()
+
+        Returns:
+            A new `AggregateFunction` representing the distinct array aggregation.
+        """
+        return AggregateFunction("array_agg_distinct", [self])
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.
